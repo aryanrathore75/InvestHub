@@ -6,10 +6,15 @@ export default function Holdings() {
   const [allHoldings, setAllholdings] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/allHoldings").then((res) => {
-      console.log(res.data);
-      setAllholdings(res.data);
-    });
+    axios
+      .get("https://zerodha-webpage-3.onrender.com/allHoldings", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data);
+        setAllholdings(res.data);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   const labels = allHoldings.map((subArray) => subArray["name"]);
