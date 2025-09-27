@@ -1,0 +1,2 @@
+[InternetShortcut]
+URL=https://github.com/apna-college/Zerodha/blob/main/dashboard/public/robots.txt
