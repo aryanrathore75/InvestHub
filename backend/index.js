@@ -1,7 +1,4 @@
 require("dotenv").config();
-
-const { config } = require("dotenv");
-
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -20,8 +17,8 @@ const PORT = process.env.PORT || 3000;
 const URL = process.env.MONGO_URL;
 
 const app = express();
-//app.use(cors());
 
+// CORS setup
 app.use(
   cors({
     origin: ["https://zerodha-webpage-3.onrender.com"],
@@ -34,21 +31,22 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/", authRoute);
 
-// Dashboard already served
+// Serve dashboard static files
 app.use("/dashboard", express.static(path.join(__dirname, "public/dashboard")));
 
-// Serve frontend
+//  Serve frontend static files
 app.use("/", express.static(path.join(__dirname, "public/frontend")));
 
-// Catch-all route
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/frontend", "index.html"));
-});
-
-app.get("*", (req, res) => {
+// Handle React Router routes separately
+app.get("/dashboard/*", (req, res) => {
   res.sendFile(path.join(__dirname, "public/dashboard", "index.html"));
 });
 
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/frontend", "index.html"));
+});
+
+// API routes
 app.get("/allHoldings", async (req, res) => {
   let allHoldings = await HoldingsModel.find({});
   res.json(allHoldings);
@@ -66,7 +64,7 @@ app.post("/newOrder", async (req, res) => {
     price: req.body.price,
     mode: req.body.mode,
   });
-  newOrder.save();
+  await newOrder.save();
   res.send(newOrder);
 });
 
