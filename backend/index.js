@@ -45,6 +45,10 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public/frontend", "index.html"));
 });
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/dashboard", "index.html"));
+});
+
 app.get("/allHoldings", async (req, res) => {
   let allHoldings = await HoldingsModel.find({});
   res.json(allHoldings);
