@@ -5,11 +5,9 @@ export default function Positions() {
   const [allPositions, setAllPositions] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("https://zerodha-webpage-3.onrender.com/allPositions")
-      .then((res) => {
-        setAllPositions(res.data);
-      });
+    axios.get("https://investhub.onrender.com/allPositions").then((res) => {
+      setAllPositions(res.data);
+    });
   });
 
   return (

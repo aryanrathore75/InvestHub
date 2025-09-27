@@ -7,7 +7,7 @@ export default function Holdings() {
 
   useEffect(() => {
     axios
-      .get("https://zerodha-webpage-3.onrender.com/allHoldings", {
+      .get("https://investhub.onrender.com/allHoldings", {
         withCredentials: true,
       })
       .then((res) => {

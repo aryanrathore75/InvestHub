@@ -6,7 +6,7 @@ export default function Orders() {
   const [allOrders, setAllorders] = useState([]);
 
   useEffect(() => {
-    axios.get("https://zerodha-webpage-3.onrender.com/newOrder").then((res) => {
+    axios.get("https://investhub.onrender.com/newOrder").then((res) => {
       console.log(res.data);
       setAllorders(res.data);
     });
