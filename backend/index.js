@@ -34,6 +34,17 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/", authRoute);
 
+// Dashboard already served
+app.use("/dashboard", express.static(path.join(__dirname, "public/dashboard")));
+
+// Serve frontend
+app.use("/", express.static(path.join(__dirname, "public/frontend")));
+
+// Catch-all route
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/frontend", "index.html"));
+});
+
 app.get("/allHoldings", async (req, res) => {
   let allHoldings = await HoldingsModel.find({});
   res.json(allHoldings);
