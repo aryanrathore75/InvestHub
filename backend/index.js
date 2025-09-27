@@ -32,18 +32,21 @@ app.use(express.json());
 app.use("/", authRoute);
 
 // Serve dashboard static files
-app.use("/dashboard", express.static(path.join(__dirname, "public/dashboard")));
+app.use(
+  "/dashboard",
+  express.static(path.join(__dirname, "public/dashboard-dist"))
+);
 
 //  Serve frontend static files
-app.use("/", express.static(path.join(__dirname, "public/frontend")));
+app.use("/", express.static(path.join(__dirname, "public/frontend-dist")));
 
 // Handle React Router routes separately
 app.get("/dashboard/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/dashboard", "index.html"));
+  res.sendFile(path.join(__dirname, "public/dashboard-dist", "index.html"));
 });
 
 app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/frontend", "index.html"));
+  res.sendFile(path.join(__dirname, "public/frontend-dist", "index.html"));
 });
 
 // API routes
