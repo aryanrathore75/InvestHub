@@ -31,29 +31,6 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/", authRoute);
 
-// ----------------- Dashboard -----------------
-
-// Serve dashboard static files
-app.use(
-  "/dashboard",
-  express.static(path.join(__dirname, "public/dashboard-dist"))
-);
-
-// React Router fallback for dashboard
-app.get("/dashboard/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/dashboard-dist", "index.html"));
-});
-
-// ----------------- Frontend -----------------
-
-// Serve frontend static files
-app.use("/", express.static(path.join(__dirname, "public/frontend-dist")));
-
-// React Router fallback for frontend
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/frontend-dist", "index.html"));
-});
-
 // API routes
 app.get("/allHoldings", async (req, res) => {
   let allHoldings = await HoldingsModel.find({});
@@ -79,6 +56,34 @@ app.post("/newOrder", async (req, res) => {
 app.get("/newOrder", async (req, res) => {
   let allOrders = await OrdersModel.find({});
   res.json(allOrders);
+});
+
+// ----------------- Static Files
+
+// Dashboard static
+app.use(
+  "/dashboard",
+  express.static(path.join(__dirname, "public/dashboard-dist"))
+);
+
+// Frontend static
+app.use("/", express.static(path.join(__dirname, "public/frontend-dist")));
+
+// Dashboard fallback
+app.get("/dashboard/*", (req, res, next) => {
+  if (req.path.startsWith("/dashboard/assets/")) {
+    return next();
+  }
+  res.sendFile(path.join(__dirname, "public/dashboard-dist", "index.html"));
+});
+
+// Frontend fallback
+
+app.get("/*", (req, res, next) => {
+  if (req.path.startsWith("/assets/")) {
+    return next();
+  }
+  res.sendFile(path.join(__dirname, "public/frontend-dist", "index.html"));
 });
 
 app.listen(PORT, () => {
