@@ -31,21 +31,28 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/", authRoute);
 
-// Serve Dashboard build
+// ----------------- Dashboard -----------------
+
+// Serve static files for dashboard FIRST
 app.use(
-  "/dashboard",
-  express.static(path.join(__dirname, "public/dashboard-dist"))
+  "/dashboard/assets",
+  express.static(path.join(__dirname, "public/dashboard-dist/assets"))
 );
 
-// React Router ke liye (Dashboard) - only for routes, not assets
+// Serve dashboard index.html for other dashboard routes
 app.get("/dashboard/*", (req, res) => {
   res.sendFile(path.join(__dirname, "public/dashboard-dist", "index.html"));
 });
 
-// Serve Frontend build
-app.use("/", express.static(path.join(__dirname, "public/frontend-dist")));
+// ----------------- Frontend -----------------
 
-// React Router ke liye (Frontend)
+// Serve static files for frontend FIRST
+app.use(
+  "/assets",
+  express.static(path.join(__dirname, "public/frontend-dist/assets"))
+);
+
+// Serve frontend index.html for other routes
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "public/frontend-dist", "index.html"));
 });
