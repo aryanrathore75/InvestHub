@@ -33,26 +33,23 @@ app.use("/", authRoute);
 
 // ----------------- Dashboard -----------------
 
-// Serve static files for dashboard FIRST
+// Serve dashboard static files
 app.use(
-  "/dashboard/assets",
-  express.static(path.join(__dirname, "public/dashboard-dist/assets"))
+  "/dashboard",
+  express.static(path.join(__dirname, "public/dashboard-dist"))
 );
 
-// Serve dashboard index.html for other dashboard routes
+// React Router fallback for dashboard
 app.get("/dashboard/*", (req, res) => {
   res.sendFile(path.join(__dirname, "public/dashboard-dist", "index.html"));
 });
 
 // ----------------- Frontend -----------------
 
-// Serve static files for frontend FIRST
-app.use(
-  "/assets",
-  express.static(path.join(__dirname, "public/frontend-dist/assets"))
-);
+// Serve frontend static files
+app.use("/", express.static(path.join(__dirname, "public/frontend-dist")));
 
-// Serve frontend index.html for other routes
+// React Router fallback for frontend
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "public/frontend-dist", "index.html"));
 });
