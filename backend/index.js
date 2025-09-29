@@ -39,10 +39,6 @@ app.use(
 
 // React Router ke liye (Dashboard) - only for routes, not assets
 app.get("/dashboard/*", (req, res) => {
-  if (req.path.startsWith("/dashboard/assets")) {
-    // Agar assets ka request hai to static serve kare
-    return res.sendStatus(404); // Ye Express ko static serve karne dega
-  }
   res.sendFile(path.join(__dirname, "public/dashboard-dist", "index.html"));
 });
 
@@ -51,10 +47,6 @@ app.use("/", express.static(path.join(__dirname, "public/frontend-dist")));
 
 // React Router ke liye (Frontend)
 app.get("/*", (req, res) => {
-  if (req.path.startsWith("/assets")) {
-    // Agar assets ka request hai to static serve kare
-    return res.sendStatus(404);
-  }
   res.sendFile(path.join(__dirname, "public/frontend-dist", "index.html"));
 });
 
